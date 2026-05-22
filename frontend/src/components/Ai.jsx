@@ -50,7 +50,7 @@ function Ai() {
     utterance.rate = 0.9;
     utterance.pitch = 1.1;
     window.speechSynthesis.speak(utterance);
-    
+
     // Add AI message to chat
     setChatMessages(prev => [...prev, { text: message, sender: 'ai', timestamp: new Date() }]);
   };
@@ -79,10 +79,10 @@ function Ai() {
 
     recognition.onresult = (e) => {
       const transcript = e.results[0][0].transcript.trim().toLowerCase();
-      
+
       // Add user message to chat
       setChatMessages(prev => [...prev, { text: transcript, sender: 'user', timestamp: new Date() }]);
-      
+
       if (transcript.includes("search") && transcript.includes("open") && !showSearch) {
         speak("Opening search for you");
         setShowSearch(true);
@@ -177,7 +177,7 @@ function Ai() {
 
   const handleRobotClick = () => {
     setShowChat(prev => !prev);
-    
+
     if (!hasWelcomed && !showChat) {
       speak("Welcome to RIVETO! How can I assist you today?");
       setHasWelcomed(true);
@@ -198,12 +198,12 @@ function Ai() {
   return (
     <div className="fixed bottom-6 right-6 z-40">
       {/* AI Assistant Robot */}
-      <div 
+      <div
         className="relative cursor-pointer group"
         onClick={handleRobotClick}
       >
         <div className="absolute -top-2 -right-2 bg-[#EF4444] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs animate-pulse">
-          <MessageCircle size={12} />
+          <MessageCircle size={17} />
         </div>
         <img
           src={robot}
@@ -220,21 +220,21 @@ function Ai() {
       {showChat && (
         <div className="absolute bottom-24 right-0 w-80 h-106 bg-white dark:bg-[#121826] rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col">
           {/* Chat Header */}
-          <div className="bg-[#2563EB] text-white p-4 flex justify-between items-center">
+          <div className="bg-[#2563EB] text-white py-2 px-4 flex justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
               <h3 className="font-semibold" style={{ fontFamily: 'Inter, sans-serif' }}>RIVETO AI Assistant</h3>
             </div>
-            <button 
+            <button
               onClick={closeChat}
               className="text-white hover:text-gray-200 transition-colors"
             >
               <X size={18} />
             </button>
           </div>
-          
+
           {/* Chat Messages */}
-          <div 
+          <div
             ref={chatContainerRef}
             className=" relative h-90 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-800"
           >
@@ -245,15 +245,15 @@ function Ai() {
               </div>
             ) : (
               chatMessages.map((msg, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`mb-3 flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div 
-                    className={`max-w-xs p-3 rounded-2xl ${msg.sender === 'user' 
-                      ? 'bg-blue-500 text-white rounded-br-none' 
+                  <div
+                    className={`max-w-xs p-2 rounded-2xl ${msg.sender === 'user'
+                      ? 'bg-blue-500 text-white rounded-br-none'
                       : 'bg-gray-200 text-gray-800 rounded-bl-none'
-                    }`}
+                      }`}
                   >
                     {msg.text}
                     <div className={`text-xs mt-1 ${msg.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
