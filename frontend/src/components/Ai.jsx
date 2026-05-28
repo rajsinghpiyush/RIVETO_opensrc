@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from 'react';
+import { useCallback, useContext, useState, useEffect, useRef } from 'react';
 import robot from '../assets/airobot.gif';
 import { shopDataContext } from '../context/ShopContext';
 import { userDataContext } from '../context/UserContext';
@@ -122,13 +122,28 @@ function Ai() {
   const [isTyping, setIsTyping] = useState(false);
 
   const chatContainerRef = useRef(null);
-  const openingSound = new Audio(sound);
+  const openingSoundRef = useRef(new Audio(sound));
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
+    if (!showChat) return;
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % placeholders.length);
     }, 2000);
     return () => clearInterval(interval);
+  }, [showChat]);
+
+  useEffect(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      recognitionRef.current = new SR();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+    }
+    return () => {
+      recognitionRef.current?.abort();
+      window.speechSynthesis.cancel();
+    };
   }, []);
 
   useEffect(() => {
@@ -342,24 +357,15 @@ function Ai() {
     processTranscript(transcript);
   };
 
-  // ─── Voice ────────────────────────────────────────────────────────────────
-  const speechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = speechRecognition ? new speechRecognition() : null;
-  if (recognition) {
-    recognition.continuous = false;
-    recognition.interimResults = false;
-  }
-
-  const handleVoiceCommand = () => {
+  const handleVoiceCommand = useCallback(() => {
+    const recognition = recognitionRef.current;
     if (!recognition) {
       toast.error('Speech recognition not supported');
       return;
     }
     setIsListening(true);
-    openingSound.play();
+    openingSoundRef.current.play();
     setActiveAi(true);
-    recognition.start();
     recognition.onresult = (e) => {
       const transcript = e.results[0][0].transcript.trim().toLowerCase();
       addUserMessage(transcript);
@@ -375,7 +381,9 @@ function Ai() {
       setIsListening(false);
       setActiveAi(false);
     };
-  };
+    recognition.start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ─── Robot click ──────────────────────────────────────────────────────────
   const handleRobotClick = () => {
