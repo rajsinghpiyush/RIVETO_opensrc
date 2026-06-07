@@ -5,8 +5,6 @@ import { LoadingState, EmptyState, ErrorState } from '../components/StateCompone
 import { FaHeart, FaTrash } from 'react-icons/fa';
 
 function Wishlist() {
-  const { wishlist, fetchWishlist, currency, removeFromWishlist } =
-    useContext(shopDataContext);
   const {
     wishlist,
     fetchWishlist,

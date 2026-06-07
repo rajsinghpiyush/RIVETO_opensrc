@@ -20,8 +20,6 @@ function ShopContext({ children }) {
 
   const { userData } = useContext(userDataContext); //
   const [wishlist, setWishlist] = useState([]);
-  const [loadingWishlist, setLoadingWishlist] = useState(false);
-  const [wishlistError, setWishlistError] = useState(null);
 
   const currency = '₹';
   const delivery_fee = 40;
@@ -29,36 +27,14 @@ function ShopContext({ children }) {
   const fetchWishlist = async () => {
     try {
       const response = await apiConfig.get('/wishlist');
- //wishlist functions
-  const fetchWishlist = async () => {
-    setLoadingWishlist(true);
-    setWishlistError(null);
-    try {
-      const response = await apiConfig.get('/wishlist');
       if (response.data.success) {
         setWishlist(response.data.wishlist);
-      } else {
-        setWishlistError(response.data.message || 'Failed to fetch wishlist');
       }
     } catch (error) {
       console.log(error);
-      setWishlistError(error.response?.data?.message || error.message || 'Failed to fetch wishlist');
-    } finally {
-      setLoadingWishlist(false);
     }
   };
-const addToWishlist = async (productId) => {
-  try {
-    const response = await apiConfig.post('/wishlist/add', { productId });
 
-      if (response.data.success) {
-        setWishlist(response.data.wishlist);
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  };
   const addToWishlist = async (productId) => {
     try {
       const response = await apiConfig.post('/wishlist/add', { productId });
@@ -293,9 +269,6 @@ const addToWishlist = async (productId) => {
     addToWishlist,
     fetchWishlist,
     removeFromWishlist,
-    setCartItem, UpdateQuantity, getCartAmount,
-    compareList, toggleCompare, removeFromCompare, comparePanelOpen, toggleComparePanel,
-    wishlist, loadingWishlist, wishlistError, addToWishlist, fetchWishlist, removeFromWishlist
   };
 
   return (

@@ -27,7 +27,7 @@ import Cart from './pages/Cart';
 import PlaceOrder from './pages/PlaceOrder';
 import FaqPage from './pages/FaqPage';
 import Order from './pages/Order';
-import PrivicyPolicy from './pages/PrivicyPolicy';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndServices from './pages/TermsAndServices';
 import SizeGuide from './pages/SizeGuide';
 import CookiePolicy from './pages/CookiePolicy';
