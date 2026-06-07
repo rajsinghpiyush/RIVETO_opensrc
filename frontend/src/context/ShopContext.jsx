@@ -9,14 +9,19 @@ function ShopContext({ children }) {
   const [product, setProduct] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, total: 0, pages: 1 });
   const [loadingProducts, setLoadingProducts] = useState(false);
+  const [productsError, setProductsError] = useState(null);
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [cartItem, setCartItem] = useState({});
+  const [loadingCart, setLoadingCart] = useState(false);
+  const [cartError, setCartError] = useState(null);
   const [compareList, setCompareList] = useState([]);
   const [comparePanelOpen, setComparePanelOpen] = useState(false);
 
   const { userData } = useContext(userDataContext); //
   const [wishlist, setWishlist] = useState([]);
+  const [loadingWishlist, setLoadingWishlist] = useState(false);
+  const [wishlistError, setWishlistError] = useState(null);
 
   const currency = '₹';
   const delivery_fee = 40;
@@ -24,6 +29,27 @@ function ShopContext({ children }) {
   const fetchWishlist = async () => {
     try {
       const response = await apiConfig.get('/wishlist');
+ //wishlist functions
+  const fetchWishlist = async () => {
+    setLoadingWishlist(true);
+    setWishlistError(null);
+    try {
+      const response = await apiConfig.get('/wishlist');
+      if (response.data.success) {
+        setWishlist(response.data.wishlist);
+      } else {
+        setWishlistError(response.data.message || 'Failed to fetch wishlist');
+      }
+    } catch (error) {
+      console.log(error);
+      setWishlistError(error.response?.data?.message || error.message || 'Failed to fetch wishlist');
+    } finally {
+      setLoadingWishlist(false);
+    }
+  };
+const addToWishlist = async (productId) => {
+  try {
+    const response = await apiConfig.post('/wishlist/add', { productId });
 
       if (response.data.success) {
         setWishlist(response.data.wishlist);
@@ -71,6 +97,7 @@ function ShopContext({ children }) {
   const getProducts = async (page = 1, limit = 20) => {
     if (loadingProducts) return;
     setLoadingProducts(true);
+    setProductsError(null);
     try {
       const result = await apiConfig.get(
         `/product/list?page=${page}&limit=${limit}`
@@ -81,6 +108,8 @@ function ShopContext({ children }) {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error fetching products:', error);
+      console.log('Error fetching products:', error);
+      setProductsError(error.response?.data?.message || error.message || 'Failed to load products.');
     } finally {
       setLoadingProducts(false);
     }
@@ -119,13 +148,18 @@ function ShopContext({ children }) {
 
   const getUserCart = async () => {
     if (!userData) return; // Don't call API if not logged in
-
+    setLoadingCart(true);
+    setCartError(null);
     try {
       const result = await apiConfig.post('/cart/get', {});
       setCartItem(result.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error fetching cart:', error);
+      console.log('❌ Error fetching cart:', error);
+      setCartError(error.response?.data?.message || error.message || 'Failed to load cart.');
+    } finally {
+      setLoadingCart(false);
     }
   };
 
@@ -234,6 +268,7 @@ function ShopContext({ children }) {
     product,
     pagination,
     loadingProducts,
+    productsError,
     currency,
     delivery_fee,
     getProducts,
@@ -242,6 +277,8 @@ function ShopContext({ children }) {
     showSearch,
     setShowSearch,
     cartItem,
+    loadingCart,
+    cartError,
     addtoCart,
     getCartCount,
     setCartItem,
@@ -256,6 +293,9 @@ function ShopContext({ children }) {
     addToWishlist,
     fetchWishlist,
     removeFromWishlist,
+    setCartItem, UpdateQuantity, getCartAmount,
+    compareList, toggleCompare, removeFromCompare, comparePanelOpen, toggleComparePanel,
+    wishlist, loadingWishlist, wishlistError, addToWishlist, fetchWishlist, removeFromWishlist
   };
 
   return (
