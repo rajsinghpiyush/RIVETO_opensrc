@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FcGoogle } from 'react-icons/fc';
-import { IoMail, IoLockClosed, IoEye, IoEyeOutline } from 'react-icons/io5';
+import { IoMail, IoLockClosed, IoEye, IoEyeOutline, IoArrowBack } from 'react-icons/io5';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -349,7 +349,17 @@ function Login() {
       </div>
 
       {/* RIGHT PANEL - Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-white dark:bg-[#0B0F1A]">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-white dark:bg-[#0B0F1A] relative">
+        {/* Floating Back to Home Link */}
+        <button
+          onClick={() => navigate('/')}
+          className="absolute top-6 left-6 z-20 group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700/80 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          aria-label="Back to Home"
+        >
+          <IoArrowBack className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 dark:text-gray-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+          <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Back to Home</span>
+        </button>
+
         <div className="login-container max-w-md w-full">
           {/* Mobile Logo */}
           <div
