@@ -14,6 +14,7 @@ import {
   IoLockClosed,
   IoMail,
   IoPerson,
+  IoArrowBack,
 } from 'react-icons/io5';
 
 function Registration() {
@@ -167,7 +168,17 @@ function Registration() {
   return (
     <>
       {step === '1' ? (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 py-8 transition-colors duration-300">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 py-8 transition-colors duration-300 relative">
+          {/* Floating Back to Home Link */}
+          <button
+            onClick={() => navigate('/')}
+            className="absolute top-6 left-6 z-20 group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700/80 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            aria-label="Back to Home"
+          >
+            <IoArrowBack className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 dark:text-gray-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Back to Home</span>
+          </button>
+
           {/* Animated Background Elements */}
           <div className="absolute inset-0 overflow-hidden z-0">
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
@@ -380,7 +391,17 @@ function Registration() {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-[#0f172a] dark:to-[#0c4a6e] px-4 relative">
+          {/* Floating Back to Home Link */}
+          <button
+            onClick={() => navigate('/')}
+            className="absolute top-6 left-6 z-20 group inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700/80 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            aria-label="Back to Home"
+          >
+            <IoArrowBack className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 dark:text-gray-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Back to Home</span>
+          </button>
+
           <div className="max-w-md w-full bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-2">
               Verify OTP
