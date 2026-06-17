@@ -1,6 +1,7 @@
 import User from "../model/userModel.js";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { genToken, genToken1 } from "../config/Token.js";
 import { sendMail } from "../config/sendEmail.js";
 import generateOTP from "../utils/otp.js";
