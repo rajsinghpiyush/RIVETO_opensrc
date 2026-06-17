@@ -37,10 +37,10 @@ export const sendOTP = async (req, res) => {
       console.log("------------------------------------------");
     }
 
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashedOTP = await bcrypt.hash(otp, 10);
 
-    // save temp user
     await TempUser.create({
       name,
       email,
@@ -77,12 +77,21 @@ export const verifyOTP = async (req, res) => {
       return res.status(400).json({ message: "User not found or OTP expired" });
     }
 
-    if (tempUser.otp !== otp) {
-      return res.status(400).json({ message: "Invalid OTP" });
+    if (tempUser.otpExpire < new Date()) {
+      return res.status(400).json({
+        message: "OTP expired",
+      });
     }
 
-    if (tempUser.otpExpire < new Date()) {
-      return res.status(400).json({ message: "OTP expired" });
+    const isValidOTP = await bcrypt.compare(
+      otp.toString(),
+      tempUser.otp
+    );
+
+    if (!isValidOTP) {
+      return res.status(400).json({
+        message: "Invalid OTP",
+      });
     }
 
     const user = await User.create({
