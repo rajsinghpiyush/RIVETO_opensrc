@@ -13,6 +13,8 @@ import Nav from './components/Nav';
 import BackToTop from './components/BackToTop';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import About from './pages/About';
 import Wishlist from './pages/wishlist';
@@ -47,8 +49,10 @@ function App() {
     removeFromCompare,
   } = useContext(shopDataContext);
   const location = useLocation();
-  const hideNavRoutes = ['/login', '/signup', '/'];
-  const shouldShowNav = !hideNavRoutes.includes(location.pathname);
+  const hideNavRoutes = ['/login', '/signup', '/', '/forgot-password', '/reset-password'];
+  const shouldShowNav = !hideNavRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
 
   return (
     <>
@@ -77,6 +81,8 @@ function App() {
             )
           }
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
 
         {/* Public landing page — no auth required */}
         <Route

@@ -1,5 +1,5 @@
 import express from "express";
-import { sendOTP, login, logOut, googleLogin, verifyOTP, adminLogin } from "../controller/authcontroller.js";
+import { sendOTP, login, logOut, googleLogin, verifyOTP, adminLogin, forgotPassword, resetPassword } from "../controller/authcontroller.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { registerSchema, loginSchema } from "../validators/authSchemas.js";
 import { authIpLimiter, otpIpLimiter } from "../middleware/rateLimiters.js";
@@ -78,5 +78,8 @@ authRoutes.post("/googlelogin", authIpLimiter, googleLogin);
  *         description: OK
  */
 authRoutes.post("/adminlogin", authIpLimiter, adminLogin);
+
+authRoutes.post("/forgot-password", forgotPassword);
+authRoutes.put("/reset-password/:resetToken", resetPassword);
 
 export default authRoutes;
