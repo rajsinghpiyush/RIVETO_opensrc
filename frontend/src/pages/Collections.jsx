@@ -309,7 +309,8 @@ function Collections() {
       : 0
   );
     setActiveFilters(filterCount);
-  }, [product, showSearch, search, category, subCategory, priceRange, selectedRatings]);
+  }, [product, showSearch, search, category, subCategory, priceRange, selectedRatings,minPrice,
+  maxPrice,]);
 
   const sortProduct = useCallback(() => {
     setFilterProduct((prev) => {
