@@ -601,21 +601,23 @@ function Collections() {
               </div>
 
               <div className="p-6">
-                <FilterContent
-                  activeFilters={activeFilters}
-                  clearAllFilters={clearAllFilters}
-                  priceRange={priceRange}
-                  setPriceRange={setPriceRange}
-                  categories={categories}
-                  category={category}
-                  toggleCategory={toggleCategory}
-                  subCategories={subCategories}
-                  subCategory={subCategory}
-                  toggleSubCategory={toggleSubCategory}
-                  ratings={ratings}
-                  selectedRatings={selectedRatings}
-                  toggleRating={toggleRating}
-                />
+               <FilterContent
+              activeFilters={activeFilters}
+              clearAllFilters={clearAllFilters}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              categories={categories}
+              category={category}
+              toggleCategory={toggleCategory}
+              subCategories={subCategories}
+              subCategory={subCategory}
+              toggleSubCategory={toggleSubCategory}
+              ratings={ratings}
+              selectedRatings={selectedRatings}
+              toggleRating={toggleRating}
+            />
               </div>
 
               {/* Action Buttons */}
