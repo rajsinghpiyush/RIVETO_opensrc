@@ -1,6 +1,10 @@
 import Order from "../model/orderModel.js"; // ✅ Keep this
 import User from "../model/userModel.js"; // ✅ Keep this
-import { sendNotification } from "../services/notificationService.js";
+import {
+  sendNotification,
+  emitActivity,
+} from "../services/notificationService.js";
+
 //for user//
 export const placeOrder = async (req, res) => {
   try {
@@ -31,10 +35,24 @@ export const placeOrder = async (req, res) => {
       type: "order_placed",
     });
 
+    emitActivity({
+      type: "order_created",
+      user: {
+        id: user?._id,
+        name: user?.name,
+        email: user?.email,
+      },
+      action: `Placed an order of $${amount}`,
+    });
+
     return res.status(201).json({ message: "Order Placed" });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Order Place error" });
+    return res.status(500).json({
+      success: false,
+      message: "Order Place error",
+      errors: [error.message],
+    });
   }
 };
 
@@ -45,7 +63,11 @@ export const userOrders = async (req, res) => {
     return res.status(200).json(orders);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "userOrders error" }); // ❗ Fixed 200 → 500
+    return res.status(500).json({
+      success: false,
+      message: "userOrders error",
+      errors: [error.message],
+    }); // ❗ Fixed 200 → 500
   }
 };
 
@@ -57,7 +79,11 @@ export const allOrders = async (req, res) => {
     res.status(200).json(orders);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "adminAllOrders error" });
+    return res.status(500).json({
+      success: false,
+      message: "adminAllOrders error",
+      errors: [error.message],
+    });
   }
 };
 
@@ -67,16 +93,32 @@ export const updateStatus = async (req, res) => {
     const order = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
 
     if (order) {
+      const user = await User.findById(order.userId);
+
       sendNotification({
         userId: order.userId,
         title: "Order Status Updated",
         message: `Your order status has been updated to "${status}".`,
         type: "order_status_updated",
       });
+
+      emitActivity({
+        type: "order_status_updated",
+        user: {
+          id: user?._id,
+          name: user?.name,
+          email: user?.email,
+        },
+        action: `Order status changed to "${status}"`,
+      });
     }
 
     return res.status(201).json({ message: "Status Updated" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update order status",
+      errors: [error.message],
+    });
   }
 };
