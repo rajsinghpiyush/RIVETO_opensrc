@@ -101,6 +101,8 @@ export const verifyOTP = async (req, res) => {
       password: tempUser.password,
     });
 
+    user.password=undefined;
+
     await TempUser.deleteOne({ email });
 
     sendNotification({
@@ -175,7 +177,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) return res.status(400).json({ message: "User not found" });
     if (!user.password) {
       return res.status(400).json({
@@ -223,9 +225,11 @@ export const login = async (req, res) => {
       action: "User logged in",
     });
 
+    user.password=undefined;
     return res.status(200).json(user);
   } catch (_error) {
     console.log("login error:", _error);
+    
     return res.status(500).json({ message: `login error: ${_error}` });
   }
 };
@@ -266,9 +270,11 @@ export const googleLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    user.password=undefined;
     return res.status(200).json(user);
   } catch (_error) {
     console.log("google login error:", _error);
+    
     return res.status(500).json({ message: `google login error: ${_error}` });
   }
 };
