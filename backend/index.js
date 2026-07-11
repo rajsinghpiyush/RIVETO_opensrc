@@ -1,18 +1,14 @@
-import "./env.js"; 
+import "./env.js";
+import { createServer } from "http";
 import { fileURLToPath } from "url";
 import path from "path";
-import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./Swagger.js";
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
 import fs from "fs";
-import botRoute from "./routes/bot.js";
-import { createServer } from "http";
-import { initSocket } from "./services/notificationService.js";
-import notificationRouter from "./routes/notificationRoutes.js";
+import express from "express";
 
+import { initSocket } from "./services/notificationService.js";
 import connectdb from "./config/db.js";
+import app from "./app.js";
+
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -21,9 +17,11 @@ import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoute.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
 import recommendationsRoute from "./routes/recommendations.js";
+import notificationRouter from "./routes/notificationRoutes.js";
+import botRoute from "./routes/bot.js";
+
 import { globalIpLimiter } from "./middleware/rateLimiters.js";
 import errorHandler from "./middleware/errorHandler.js";
-
 
 const app = express();
 app.set("trust proxy", 1);
