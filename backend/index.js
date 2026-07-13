@@ -21,6 +21,8 @@ import notificationRouter from "./routes/notificationRoutes.js";
 import botRoute from "./routes/bot.js";
 
 import errorHandler from "./middleware/errorHandler.js";
+import errorHandler from "./middleware/errorHandler.js";
+import logger from "./config/logger.js";
 
 const PORT = process.env.PORT || 3000;
 const server = createServer(app);
@@ -63,6 +65,8 @@ if (fs.existsSync(frontendBuildPath)) {
   });
 }
 
+app.use(errorHandler);
+
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  logger.info(`🚀 Server running on port ${PORT}`);
 });
